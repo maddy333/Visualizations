@@ -1,0 +1,159 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/colmr/vis_class/master/video_games.csv",
+    "format": {"type": "csv"}
+  },
+  "title": {
+    "text": "Video Game Sales Explorer",
+    "anchor": "middle",
+    "fontSize": 30
+  },
+  "vconcat": [
+    {
+      "hconcat": [
+        {
+          "width": 500,
+          "height": 600,
+          "transform": [
+            {"filter": {"param": "brush"}},
+            {"filter": {"param": "genre_selection"}}
+          ],
+          "params": [
+            {
+              "name": "brush",
+              "select": {
+                "type": "interval",
+                "resolve": "global",
+                "encodings": ["x", "y"]
+              }
+            },
+            {
+              "name": "select_platform",
+              "select": {"type": "point", "fields": ["Platform"]},
+              "bind": "legend"
+            }
+          ],
+          "mark": {"type": "circle", "tooltip": true},
+          "encoding": {
+            "x": {
+              "field": "EU_Sales",
+              "type": "quantitative",
+              "axis": {
+                "title": "EU Sales (Millions)",
+                "tickCount": 5,
+                "grid": true,
+                "labelFlush": true
+              },
+              "scale": {"type": "log", "domain": [0.01, 50]}
+            },
+            "y": {
+              "field": "Global_Sales",
+              "type": "quantitative",
+              "axis": {
+                "title": "Global Sales (Millions)",
+                "tickCount": 5,
+                "grid": true,
+                "labelFlush": true
+              },
+              "scale": {"type": "log", "domain": [0.01, 100]}
+            },
+            "color": {
+              "condition": {
+                "param": "brush",
+                "field": "Platform",
+                "type": "nominal",
+                "scale": {"scheme": "category20"}
+              },
+              "value": "grey"
+            },
+            "tooltip": [{"field": "Name", "type": "nominal"}],
+            "opacity": {
+              "condition": {"param": "select_platform", "value": 1},
+              "value": 0.2
+            }
+          }
+        },
+        {
+          "width": 400,
+          "height": 600,
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "aggregate": "count",
+              "field": "*",
+              "type": "quantitative",
+              "axis": {"title": "#Games"}
+            },
+            "y": {"field": "Genre", "type": "nominal", "sort": "-x"},
+            "color": {
+              "condition": {
+                "param": "select_platform",
+                "field": "Platform",
+                "type": "nominal",
+                "scale": {"scheme": "category20"}
+              },
+              "value": "grey"
+            },
+            "opacity": {
+              "condition": {"param": "genre_selection", "value": 1},
+              "value": 0.5
+            }
+          },
+          "transform": [
+            {"filter": {"param": "brush"}},
+            {"filter": {"param": "brush2"}},
+            {"filter": {"param": "select_platform"}}
+          ],
+          "params": [
+            {
+              "name": "genre_selection",
+              "select": {"type": "point", "fields": ["Genre"]}
+            }
+          ]
+        }
+      ],
+      "spacing": 10
+    },
+    {
+      "transform": [
+        {"filter": {"param": "select_platform"}},
+        {"filter": {"param": "brush2"}},
+        {"filter": {"param": "brush"}},
+        {"filter": {"param": "genre_selection"}}
+      ],
+      "params": [
+        {
+          "name": "brush2",
+          "select": {
+            "type": "interval",
+            "resolve": "global",
+            "encodings": ["x", "y"]
+          }
+        }
+      ],
+      "height": 100,
+      "width": 900,
+      "mark": {"type": "bar", "tooltip": true},
+      "encoding": {
+        "x": {"field": "Year", "type": "ordinal", "axis": {"title": "Year"}},
+        "y": {
+          "aggregate": "count",
+          "field": "Platform",
+          "type": "quantitative",
+          "axis": {"title": "#Games"}
+        },
+        "color": {
+          "condition": {
+            "param": "select_platform",
+            "field": "Platform",
+            "type": "nominal",
+            "scale": {"scheme": "category20"}
+          },
+          "value": "grey"
+        },
+        "opacity": {"condition": {"param": "brush2", "value": 1}, "value": 0.2}
+      }
+    }
+  ]
+}
