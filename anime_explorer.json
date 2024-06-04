@@ -1,0 +1,175 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/maddy151221/infoviz/main/animedata.csv",
+    "format": {"type": "csv"}
+  },
+  "title": {
+    "text": "Anime Explorer",
+    "anchor": "middle",
+    "fontSize": 30,
+    "offset": 20
+  },
+  "vconcat": [
+    {
+      "hconcat": [
+        {
+          "params": [
+            {
+              "name": "brush",
+              "select": {
+                "type": "interval",
+                "resolve": "global",
+                "encodings": ["x", "y"]
+              }
+            },
+            {
+              "name": "select_platform",
+              "select": {"type": "interval", "fields": ["source"]},
+              "bind": "legend"
+            }
+          ],
+          "width": 600,
+          "height": 400,
+          "mark": {"type": "circle", "tooltip": true},
+          "encoding": {
+            "x": {
+              "field": "score",
+              "type": "quantitative",
+              "axis": {
+                "title": "score",
+                "tickCount": 25,
+                "grid": true,
+                "labelFlush": true
+              },
+              "scale": {"type": "ordinal", "domain": [1, 10]}
+            },
+            "y": {
+              "field": "popularity",
+              "type": "quantitative",
+              "axis": {
+                "title": "Popularity",
+                "tickCount": 25,
+                "grid": true,
+                "labelFlush": true
+              },
+              "scale": {"type": "log"}
+            },
+            "legend": {"labelColor": "#ccc", "legendOpacity": 0.5},
+            "color": {
+              "condition": {
+                "param": "brush",
+                "field": "source",
+                "type": "nominal",
+                "scale": {"type": "log", "scheme": "category20"}
+              },
+              "value": "grey"
+            },
+            "tooltip": [{"field": "name", "type": "nominal"}],
+            "opacity": {
+              "condition": {"param": "select_platform", "value": 1},
+              "value": 0
+            }
+          },
+          "transform": [
+            {"filter": {"param": "brush2"}},
+            {"filter": {"param": "genre_selection"}}
+          ]
+        },
+        {
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "aggregate": "count",
+              "field": "*",
+              "type": "quantitative",
+              "axis": {"title": "Number of Anime"}
+            },
+            "y": {"field": "source", "type": "nominal", "sort": "-x"},
+            "legend": {
+              "labelColor": "#ccc",
+              "legendOpacity": 0.5,
+              "unselectedOpacity": 1
+            },
+            "color": {
+              "condition": {
+                "param": "select_platform",
+                "field": "source",
+                "type": "nominal",
+                "scale": {"scheme": "category20"}
+              },
+              "value": "grey"
+            },
+            "opacity": {
+              "condition": {"param": "genre_selection", "value": 1},
+              "value": 0.5
+            }
+          },
+          "params": [
+            {
+              "name": "genre_selection",
+              "select": {"type": "point", "fields": ["source"]}
+            }
+          ],
+          "transform": [
+            {"filter": {"param": "brush"}},
+            {"filter": {"param": "brush2"}},
+            {"filter": {"param": "select_platform"}}
+          ]
+        }
+      ],
+      "spacing": 20
+    },
+    {
+      "params": [
+        {
+          "name": "brush2",
+          "select": {
+            "type": "point",
+            "resolve": "global",
+            "encodings": ["x", "y"]
+          }
+        }
+      ],
+      "height": 400,
+      "width": 600,
+      "mark": {"type": "bar", "tooltip": true},
+      "encoding": {
+        "x": {
+          "aggregate": "members",
+          "type": "quantitative",
+          "field": "rank",
+          "axis": {"title": "RANK"}
+        },
+        "y": {
+          "field": "name",
+          "type": "nominal",
+          "sort": {"field": "members", "order": "descending"},
+          "axis": {"title": " NAME"}
+        },
+        "legend": {"labelColor": "#ccc", "legendOpacity": 0.5},
+        "color": {
+          "condition": {
+            "param": "brush2",
+            "field": "source",
+            "type": "nominal",
+            "scale": {"scheme": "category20"}
+          },
+          "value": "grey",
+          "legendOpacity": 0.5
+        },
+        "opacity": {
+          "condition": {"param": "select_platform", "value": 1},
+          "value": 0.2
+        }
+      },
+      "transform": [
+        {
+          "window": [{"op": "rank", "as": "animeID"}],
+          "order": [{"field": "rank", "order": "descending"}]
+        },
+        {"filter": "datum.rank <= 30"}
+      ]
+    }
+  ]
+}
