@@ -1,4 +1,4 @@
-Visualizations
+
 
 This repository contains a collection of dashboards created using Vega-Lite and Tableau. These visualizations are designed to provide insights into various datasets through interactive and informative dashboards.
 Contents
