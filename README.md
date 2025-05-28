@@ -3,7 +3,7 @@ This repository contains a collection of dashboards created using Vega-Lite and 
 Contents
 The repository includes the following files:
 
-Flights_Dashboard.twb: A Tableau workbook that visualizes flight-related data.
+Flights_Dashboard.twb: A Tableau workbook that visualizes flight-related data. (Tableau Desktop required!)
 dashboard.vl.json: A Vega-Lite JSON specification for a dashboard created for video game sales
 anime_explorer.json: A Vega-Lite JSON specification for exploring anime-related data.
 
