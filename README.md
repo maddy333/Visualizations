@@ -4,13 +4,13 @@ Contents
 The repository includes the following files:
 
 Flights_Dashboard.twb: A Tableau workbook that visualizes flight-related data.
-dashboard.vl.json: A Vega-Lite JSON specification for a dashboard created by Madhav Mohan.
+dashboard.vl.json: A Vega-Lite JSON specification for a dashboard created for video game sales
 anime_explorer.json: A Vega-Lite JSON specification for exploring anime-related data.
 
 ## Screenshots
 
 ![Dashboard Visualizations](screenshot.png)
-*Collection of interactive dashboards showcasing flight data, comprehensive analytics, and anime exploration*
+*Collection of interactive dashboards showcasing video game sales*
 
 Ensure you have Tableau Desktop installed.
 Open Flights_Dashboard.twb with Tableau Desktop to explore the flight data visualization.
